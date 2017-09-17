@@ -10,42 +10,55 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
 
+/**
+ * Simple calculator program.
+ * 
+ * @author Austin Ayers
+ * @version 9/16/17
+ */
+
 public class Calculator
 {
-    private JFrame Frame;
+    public static final int FRAME_SIZE = 400;
+    private JFrame frame;
     private JLabel resultLabel;
-    // private JTextField calcText;
     private JTextField leftOperand;
     private JTextField rightOperand;
-    private JTextField result;
 
+    /**
+     * Constructor that builds the calculator frame.
+     */
     public Calculator()
     {
-        Frame = new JFrame();
-        Frame.setLocation(100, 100);
-        Frame.setSize(400, 400);
-        Frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        Frame.setTitle("Simple Calculator");
+        frame = new JFrame();
+        frame.setLocation(100, 100);
+        frame.setSize(FRAME_SIZE, FRAME_SIZE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("Simple Calculator");
         initializeComponents();
-        Frame.pack();
-        Frame.setVisible(true);
+        frame.pack();
+        frame.setVisible(true);
     }
 
+    /**
+     * Method to initialize all the calculator components onto the frame.
+     */
     public void initializeComponents()
     {
+
         // Create the buttons
         JButton addButton = new JButton("ADD");
         addButton.setName("ADD");
-        addButton.addActionListener(new DoTheMath());
+        addButton.addActionListener(new Addition());
         JButton subButton = new JButton("SUB");
         subButton.setName("SUB");
-        subButton.addActionListener(new DoTheMath());
+        subButton.addActionListener(new Subtraction());
         JButton multButton = new JButton("MULT");
         multButton.setName("MULT");
-        multButton.addActionListener(new DoTheMath());
+        multButton.addActionListener(new Multiplication());
         JButton divButton = new JButton("DIV");
         divButton.setName("DIV");
-        divButton.addActionListener(new DoTheMath());
+        divButton.addActionListener(new Division());
 
         // Create the button panel
         JPanel positPanel = new JPanel();
@@ -57,60 +70,166 @@ public class Calculator
         positPanel.add(divButton);
 
         // Add the panel to the bottom of the calculator window
-        Frame.add(positPanel, BorderLayout.PAGE_END);
+        frame.add(positPanel, BorderLayout.PAGE_END);
 
         // Create new label panel and result label.
         JPanel labelPanel = new JPanel();
-        resultLabel = new JLabel("Result = ");
+        resultLabel = new JLabel("Result =");
 
         // Add the result label to the label panel, then frame.
         labelPanel.add(resultLabel);
-        Frame.add(labelPanel, BorderLayout.LINE_START);
+        frame.add(labelPanel, BorderLayout.LINE_START);
 
         // Create new text field panel
         JPanel textPanel = new JPanel();
 
         // Create new text fields
-        leftOperand = new JTextField(4);
-        rightOperand = new JTextField(4);
+        leftOperand = new JTextField(10);
+        rightOperand = new JTextField(10);
 
         // Add text fields to panel, then to frame
         textPanel.add(leftOperand);
         textPanel.add(rightOperand);
-        Frame.add(textPanel, BorderLayout.NORTH);
-
+        frame.add(textPanel, BorderLayout.NORTH);
     }
 
-    public class DoTheMath implements ActionListener
+    /**
+     * Class that performs the addition function.
+     */
+    public class Addition implements ActionListener
     {
+        /**
+         * ActionEvent for addition.
+         * 
+         * @param e
+         *            takes the listener.
+         */
         public void actionPerformed(ActionEvent e)
         {
+            // catch number format exception
             try
             {
                 double n1 = Double.parseDouble(leftOperand.getText());
                 double n2 = Double.parseDouble(rightOperand.getText());
                 double ans = n1 + n2;
-                result.setText("" + ans);
+                resultLabel.setText("Result = " + ans);
             }
             catch (Exception ee)
             {
-                result.setText("Error");
-            }
-            finally
-            {
-
+                resultLabel.setText("Result = Error");
             }
         }
-
     }
 
-    // catch number format exception
+    /**
+     * Class that performs the subtraction function.
+     */
+    public class Subtraction implements ActionListener
+    {
+        /**
+         * ActionEvent for subtraction.
+         * 
+         * @param e
+         *            takes the listener.
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            // catch number format exception
+            try
+            {
+                double n1 = Double.parseDouble(leftOperand.getText());
+                double n2 = Double.parseDouble(rightOperand.getText());
+                double ans = n1 - n2;
+                resultLabel.setText("Result = " + ans);
+            }
+            catch (Exception ee)
+            {
+                resultLabel.setText("Result = Error");
+            }
+        }
+    }
+
+    /**
+     * Class that performs the division function.
+     */
+    public class Division implements ActionListener
+    {
+        /**
+         * ActionEvent for division.
+         * 
+         * @param e
+         *            takes the listener.
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            // catch number format exception
+            try
+            {
+                double n1 = Double.parseDouble(leftOperand.getText());
+                double n2 = Double.parseDouble(rightOperand.getText());
+
+                if (n2 == 0)
+                {
+                    resultLabel.setText("Result = Error");
+                }
+                else
+                {
+                    double ans = n1 / n2;
+                    resultLabel.setText("Result = " + ans);
+                }
+            }
+            catch (Exception ee)
+            {
+                resultLabel.setText("Result = Error");
+            }
+        }
+    }
+
+    /**
+     * Class that performs the multiplication function.
+     */
+    public class Multiplication implements ActionListener
+    {
+        /**
+         * ActionEvent for multiplication.
+         * 
+         * @param e
+         *            takes the listener.
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            // catch number format exception
+            try
+            {
+                double n1 = Double.parseDouble(leftOperand.getText());
+                double n2 = Double.parseDouble(rightOperand.getText());
+                double ans = n1 * n2;
+                resultLabel.setText("Result = " + ans);
+            }
+            catch (Exception ee)
+            {
+                resultLabel.setText("Result = Error");
+            }
+        }
+    }
+
+    /**
+     * Getter for the frame.
+     * 
+     * @return returns the frame.
+     */
     public JFrame getFrame()
     {
-        return Frame;
+        return frame;
     }
 
-    public static void main(String args[])
+    /**
+     * Main method, creates the calculator object.
+     * 
+     * @param args
+     *            String
+     */
+    public static void main(String[] args)
     {
         Calculator calc = new Calculator();
     }
